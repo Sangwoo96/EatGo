@@ -14,6 +14,7 @@ public class RestaurantService {
     @Autowired
     MenuItemsRepository menuItemsRepository;
 
+    //RestaurantServiceTest를 위한 생성자
     public RestaurantService(RestaurantsRepository restaurantRepository, MenuItemsRepository menuItemsRepository) {
         this.restaurantsRepository = restaurantRepository;
         this.menuItemsRepository = menuItemsRepository;
@@ -30,5 +31,10 @@ public class RestaurantService {
     public List<Restaurant> getRestaurants() {
         List<Restaurant> restaurants = restaurantsRepository.findAll();
         return restaurants;
+    }
+
+    public Restaurant addRestaurant(Restaurant restaurant) {
+        Restaurant saved = restaurantsRepository.save(restaurant);
+        return saved;
     }
 }
