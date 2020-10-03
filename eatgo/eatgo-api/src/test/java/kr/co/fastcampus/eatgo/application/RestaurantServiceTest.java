@@ -3,23 +3,56 @@ package kr.co.fastcampus.eatgo.application;
 import kr.co.fastcampus.eatgo.domain.*;
 import org.junit.Before;
 import org.junit.Test;
+import org.mockito.Mock;
+import org.mockito.MockitoAnnotations;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import static org.hamcrest.core.Is.is;
 import static org.junit.Assert.*;
+import static org.mockito.BDDMockito.given;
 
 public class RestaurantServiceTest {
 
     private RestaurantService restaurantService;
+    
+    @Mock
     private RestaurantsRepository restaurantRepository;
-    private MenuItemsRepository menuItemsRepository;
 
+    @Mock
+    private MenuItemsRepository menuItemsRepository;
+    //Service 내에서 불필요한 객체 의존성 주입을 가짜 객체를 사용하여 해결
+    
     @Before
     public void setUp(){
-        restaurantRepository = new RestaurantsRepositoryImpl();
-        menuItemsRepository = new MenuItemsRepositoryImpl();
+//      restaurantRepository = new RestaurantsRepositoryImpl();
+//      menuItemsRepository = new MenuItemsRepositoryImpl();
+//      객체 의존성 주입 삭제
+        
+        MockitoAnnotations.initMocks(this);
+
+        mockRestaurantRepository();
+        mockRMenuItemRepository();
+
         restaurantService = new RestaurantService(restaurantRepository, menuItemsRepository);
+    }
+
+    private void mockRestaurantRepository() {
+        List<Restaurant> restaurants = new ArrayList<>();
+        Restaurant restaurant = new Restaurant(1004L, "bob zip", "seoul");
+        restaurants.add(restaurant);
+
+        given(restaurantRepository.findAll()).willReturn(restaurants);
+        given(restaurantRepository.findById(1004L)).willReturn(restaurant);
+    }
+
+    private void mockRMenuItemRepository() {
+        List<MenuItem> menuItems = new ArrayList<>();
+        MenuItem menuItem = new MenuItem("kimchi", 1004L);
+        menuItems.add(menuItem);
+
+        given(menuItemsRepository.findByAllRestaurantId(1004L)).willReturn(menuItems);
     }
 
 
