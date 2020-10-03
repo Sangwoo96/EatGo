@@ -1,5 +1,8 @@
 package kr.co.fastcampus.eatgo.interfaces;
 
+import kr.co.fastcampus.eatgo.application.RestaurantService;
+import kr.co.fastcampus.eatgo.domain.MenuItemsRepository;
+import kr.co.fastcampus.eatgo.domain.MenuItemsRepositoryImpl;
 import kr.co.fastcampus.eatgo.domain.RestaurantsRepository;
 import kr.co.fastcampus.eatgo.domain.RestaurantsRepositoryImpl;
 import org.junit.Test;
@@ -21,8 +24,14 @@ public class RestaurantControllerTest {
     @Autowired
     private MockMvc mvc;
 
+    @SpyBean(RestaurantService.class)
+    private RestaurantService restaurantService;
+
     @SpyBean(RestaurantsRepositoryImpl.class)
     private RestaurantsRepository restaurantsRepository;
+
+    @SpyBean(MenuItemsRepositoryImpl.class)
+    private MenuItemsRepository menuItemsRepository;
 
     @Test
     public void list() throws Exception {
@@ -37,7 +46,8 @@ public class RestaurantControllerTest {
         mvc.perform(get("/restaurants/1004"))
                 .andExpect(status().isOk())
                 .andExpect(content().string(containsString("\"name\":\"bob zip\"")))
-                .andExpect(content().string(containsString("\"id\":1004")));;
+                .andExpect(content().string(containsString("\"id\":1004")))
+                .andExpect(content().string(containsString("kimchi")));
 
         mvc.perform(get("/restaurants/2020"))
                 .andExpect(status().isOk())
