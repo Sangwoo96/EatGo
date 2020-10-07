@@ -1,20 +1,26 @@
 package kr.co.fastcampus.eatgo.domain;
 
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
+
+@Entity
+@Getter
+@Builder
+@NoArgsConstructor
+@AllArgsConstructor
 public class MenuItem {
 
-    private final String name;
-    private final Long restaurantId;
+    @Id
+    @GeneratedValue
+    private Long id;
 
-    public MenuItem(String name, Long restaurantId) {
-        this.name = name;
-        this.restaurantId = restaurantId;
-    }
+    private String name;
 
-    public String getName() {
-        return name;
-    }
-
-    public Long getRestaurantId(){
-        return restaurantId;
-    }
+    private Long restaurantId;
 }

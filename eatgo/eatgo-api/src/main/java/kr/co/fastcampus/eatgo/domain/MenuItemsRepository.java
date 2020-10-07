@@ -1,7 +1,9 @@
 package kr.co.fastcampus.eatgo.domain;
 
+import org.springframework.data.repository.CrudRepository;
+
 import java.util.List;
 
-public interface MenuItemsRepository {
-   List<MenuItem> findByAllRestaurantId(Long restaurantId);
+public interface MenuItemsRepository extends CrudRepository<MenuItem, Long> {
+   List<MenuItem> findAllByRestaurantId(Long restaurantId);
 }
