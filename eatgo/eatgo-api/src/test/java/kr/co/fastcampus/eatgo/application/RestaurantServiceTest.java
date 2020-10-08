@@ -13,7 +13,10 @@ import java.util.Optional;
 import static org.hamcrest.core.Is.is;
 import static org.junit.Assert.*;
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.BDDMockito.given;
+import static org.mockito.Mockito.verify;
+
 
 public class RestaurantServiceTest {
 
@@ -24,20 +27,19 @@ public class RestaurantServiceTest {
 
     @Mock
     private MenuItemsRepository menuItemsRepository;
-    //Service 내에서 불필요한 객체 의존성 주입을 가짜 객체를 사용하여 해결
+
+    @Mock
+    private ReviewRepository reviewsRepository;
     
     @Before
     public void setUp(){
-//      restaurantRepository = new RestaurantsRepositoryImpl();
-//      menuItemsRepository = new MenuItemsRepositoryImpl();
-//      객체 의존성 주입 삭제
-        
         MockitoAnnotations.initMocks(this);
 
         mockRestaurantRepository();
-        mockRMenuItemRepository();
+        mockMenuItemRepository();
+        mockReviewRepository();
 
-        restaurantService = new RestaurantService(restaurantRepository, menuItemsRepository);
+        restaurantService = new RestaurantService(restaurantRepository, menuItemsRepository, reviewsRepository);
     }
 
     private void mockRestaurantRepository() {
@@ -53,7 +55,7 @@ public class RestaurantServiceTest {
         given(restaurantRepository.findById(1004L)).willReturn(Optional.of(restaurant));
     }
 
-    private void mockRMenuItemRepository() {
+    private void mockMenuItemRepository() {
         List<MenuItem> menuItems = new ArrayList<>();
         MenuItem menuItem =MenuItem.builder()
                 .id(1004L)
@@ -64,12 +66,31 @@ public class RestaurantServiceTest {
         given(menuItemsRepository.findAllByRestaurantId(1004L)).willReturn(menuItems);
     }
 
+    private void mockReviewRepository() {
+        List<Review> reviews = new ArrayList<>();
+        Review review = Review.builder()
+                .name("BeRyong")
+                .score(1)
+                .description("Bad!")
+                .build();
+        reviews.add(review);
+        given(reviewsRepository.findAllByRestaurantId(1004L)).willReturn(reviews);
+
+    }
+
     @Test
     public void getRestaurantWithExisted(){
         Restaurant restaurant = restaurantService.getRestaurant(1004L);
+
+        verify(menuItemsRepository).findAllByRestaurantId(eq(1004L));
+        verify(reviewsRepository).findAllByRestaurantId(eq(1004L));
+
         assertThat(restaurant.getId(), is(1004L));
         MenuItem menuItem = restaurant.getMenuItems().get(0);
         assertThat(menuItem.getName(), is("kimchi"));
+
+        Review review = restaurant.getReviews().get(0);
+        assertThat(review.getDescription(), is("Bad!"));
     }
 
     //테스트에서의 예외처리
