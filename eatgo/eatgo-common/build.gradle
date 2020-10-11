@@ -22,7 +22,6 @@ dependencies {
     implementation 'org.springframework.boot:spring-boot-starter-web'
     implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
     implementation 'com.h2database:h2'
-    implementation 'junit:junit:4.12'
     implementation 'org.springframework.boot:spring-boot-starter-validation'
 
     compileOnly 'org.projectlombok:lombok'
@@ -31,12 +30,13 @@ dependencies {
 
     annotationProcessor 'org.projectlombok:lombok'
 
-    testImplementation('org.springframework.boot:spring-boot-starter-test') {
-        exclude group: 'org.junit.vintage', module: 'junit-vintage-engine'
-    }
+    testImplementation('org.springframework.boot:spring-boot-starter-test')
 }
 
-/////////////////
+test {
+    useJUnitPlatform()
+}
+
 jar {
     enabled = true
 }
@@ -44,8 +44,4 @@ jar {
 bootJar {
     enabled = false
 }
-//////////////////
 
-test {
-    useJUnitPlatform()
-}

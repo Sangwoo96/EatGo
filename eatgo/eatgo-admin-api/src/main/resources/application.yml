@@ -1,0 +1,11 @@
+spring:
+  datasource:
+    url: jdbc:h2:./h2Data/eatgo
+  jpa:
+    hibernate:
+      ddl-auto: update
+---
+sping:
+  profiles: test
+  datasource:
+    url: jdbc:h2:mem:test

@@ -20,7 +20,7 @@ public class MenuItemController {
         return "";
     }
 
-    @GetMapping("/restaurants/{restaurantId}/menuitems}")
+    @GetMapping("/restaurants/{restaurantId}/menuitems")
     public List<MenuItem> getMenuItems(@PathVariable("restaurantId") Long restaurantId){
         List<MenuItem> menuItems = menuItemService.getMenuItems(restaurantId);
         return menuItems;

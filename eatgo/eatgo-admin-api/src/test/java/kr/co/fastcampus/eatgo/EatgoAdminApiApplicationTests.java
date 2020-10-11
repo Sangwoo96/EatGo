@@ -8,5 +8,4 @@ class EatgoAdminApiApplicationTests {
 	@Test
 	void contextLoads() {
 	}
-
 }
