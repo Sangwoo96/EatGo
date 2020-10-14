@@ -12,7 +12,6 @@ import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 import static org.hamcrest.core.StringContains.containsString;
@@ -92,7 +91,7 @@ public class RestaurantControllerTest {
 
         mvc.perform(post("/restaurants")
                 .contentType(MediaType.APPLICATION_JSON)
-                .content("{\"name\" : \"BeRyong\", \"address\" : \"Busan\"}"))
+                .content("{\"name\" : \"BeRyong\", \"address\" : \"Busan\", \"categoryId\" : \"1\"}"))
                 .andExpect(status().isCreated()) //isCreated => status 201
                 .andExpect(header().string("location", "/restaurants/1234"))
                 .andExpect(content().string("{}"));
@@ -101,11 +100,12 @@ public class RestaurantControllerTest {
         //restaurantService mock 객체의 addRestaurant 메소드가 호출되었는지 확인
     }
 
+    //{"name" : "JOKER Bar", "address" : "Busan", "categoryId" : ""}
     @Test
     public void createWithInvalidData() throws Exception {
         mvc.perform(post("/restaurants")
                 .contentType(MediaType.APPLICATION_JSON)
-                .content("{\"name\" : \"\", \"address\" : \"\"}"))
+                .content("{\"name\" : \"\", \"address\" : \"\", \"categoryId\" : \"\"}"))
                 .andExpect(status().isBadRequest()); //isCreated => status 201
     }
 
@@ -113,17 +113,17 @@ public class RestaurantControllerTest {
     public void updateWithValidData() throws Exception {
         mvc.perform(patch("/restaurants/1004")
                 .contentType(MediaType.APPLICATION_JSON)
-                .content("{\"name\" : \"JOKER Bar\", \"address\" : \"Busan\"}"))
+                .content("{\"name\" : \"JOKER Bar\", \"address\" : \"Busan\", \"categoryId\" : \"1\"}"))
                 .andExpect(status().isOk());
 
-        verify(restaurantService).updateRestaurant(1004L, "JOKER Bar", "Busan");
+        verify(restaurantService).updateRestaurant(1004L, "JOKER Bar", "Busan", 1L);
     }
 
     @Test
     public void updateWithInvalidData() throws Exception {
         mvc.perform(patch("/restaurants/1004")
                 .contentType(MediaType.APPLICATION_JSON)
-                .content("{\"name\" : \"\", \"address\" : \"\"}"))
+                .content("{\"name\" : \"\", \"address\" : \"\", \"categoryId\" : \"\"}"))
                 .andExpect(status().isBadRequest());
 
     }

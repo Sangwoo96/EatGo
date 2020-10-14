@@ -9,6 +9,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.Transient;
 import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -22,6 +23,9 @@ public class Restaurant {
     @GeneratedValue
     @Setter
     private Long id;
+
+    @NotNull
+    private Long categoryId;
 
     @NotEmpty(message = "이름은 필수칸입니다.")
     private String name;
@@ -40,9 +44,10 @@ public class Restaurant {
         return name + " in " + address;
     }
 
-    public void updateInformation(String name, String address) {
+    public void updateInformation(String name, String address, Long categoryId) {
         this.name = name;
         this.address = address;
+        this.categoryId = categoryId;
     }
 
     public void setMenuItems(List<MenuItem> menuItems) {

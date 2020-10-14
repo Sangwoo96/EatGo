@@ -88,10 +88,11 @@ public class RestaurantServiceTest {
                 .id(1004L)
                 .name("Bob zip")
                 .address("Seoul")
+                .categoryId(1L)
                 .build();
         given(restaurantRepository.findById(1004L)).willReturn(Optional.of(restaurant));
 
-        restaurantService.updateRestaurant(1004L, "Sool zip", "Busan");
+        restaurantService.updateRestaurant(1004L, "Sool zip", "Busan", 1L);
         assertThat(restaurant.getName(), is("Sool zip"));
         assertThat(restaurant.getAddress(), is("Busan"));
     }

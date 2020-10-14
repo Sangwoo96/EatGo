@@ -35,28 +35,22 @@ public class RestaurantControllerTest {
     private RestaurantService restaurantService;
     //mockbean 가짜 객체 생성
 
-//    @SpyBean(RestaurantsRepositoryImpl.class)
-//    private RestaurantsRepository restaurantsRepository;
-//
-//    @SpyBean(MenuItemsRepositoryImpl.class)
-//    private MenuItemsRepository menuItemsRepository;
-
     @Test
     public void list() throws Exception {
         List<Restaurant> restaurants = new ArrayList<>();
         restaurants.add(Restaurant.builder()
                         .id(1004L)
                         .name("JOKER HOUSE")
+                        .categoryId(1L)
                         .address("Seoul")
                         .build());
-        given(restaurantService.getRestaurants()).willReturn(restaurants);
-        //Service의 기능을 테스트하는 것이 아니고 controller를 테스트하는 것이기 때문에 repository 의존성을 주입시킬 필요가 없다.
-        //list() 컨트롤러에서 사용하는 Service의 getRestaurants의 결과를 임의로 지정한다.
+        given(restaurantService.getRestaurants("Seoul", 1L)).willReturn(restaurants);
 
-        mvc.perform(get("/restaurants"))
+        mvc.perform(get("/restaurants?region=Seoul&categoryId=1"))
                 .andExpect(status().isOk())
                 .andExpect(content().string(containsString("\"name\":\"JOKER HOUSE\"")))
-                .andExpect(content().string(containsString("\"id\":1004")));
+                .andExpect(content().string(containsString("\"id\":1004")))
+                .andExpect(content().string(containsString("\"address\":\"Seoul\"")));
     }
 
     @Test

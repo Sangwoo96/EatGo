@@ -4,7 +4,6 @@ import kr.co.fastcampus.eatgo.domain.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import javax.transaction.Transactional;
 import java.util.List;
 
 @Service
@@ -35,8 +34,9 @@ public class RestaurantService {
         return restaurant;
     }
 
-    public List<Restaurant> getRestaurants() {
-        List<Restaurant> restaurants = restaurantsRepository.findAll();
+    public List<Restaurant> getRestaurants(String region, Long categoryId) {
+        List<Restaurant> restaurants =
+                restaurantsRepository.findAllByAddressContainingAndCategoryId(region, categoryId);
         return restaurants;
     }
 }

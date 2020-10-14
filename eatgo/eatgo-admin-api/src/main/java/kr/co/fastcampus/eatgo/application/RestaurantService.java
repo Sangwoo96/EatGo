@@ -29,9 +29,9 @@ public class RestaurantService {
     }
 
     @Transactional
-    public Restaurant updateRestaurant(long id, String name, String address) {
+    public Restaurant updateRestaurant(long id, String name, String address, Long categoryId) {
         Restaurant restaurant = restaurantsRepository.findById(id).orElse(null);
-        restaurant.updateInformation(name, address);
+        restaurant.updateInformation(name, address, categoryId);
         return restaurant;
     }
 }
